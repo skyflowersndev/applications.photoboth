@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skyflowersn booth ⋆｡ﾟ☁︎</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap');
+
+  :root{
+    --pink: #FBD5E0;
+    --pink-deep: #C94F7C;
+    --lavender: #E3D9F5;
+    --butter: #FFF3CF;
+    --mint: #D3F3E4;
+    --cream: #FFF9F2;
+    --ink: #5B4A55;
+    --ink-soft: #8E7B89;
+    --white: #FFFFFF;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    min-height:100vh;
+    background:radial-gradient(circle,#F4A6C2 3px,transparent 4px) 0 0/22px 22px, #FFF9F2;
+    font-family:'Quicksand', sans-serif;
+    color: var(--ink);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 40px 16px 70px;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  .doodle{
+    position:absolute;
+    font-size: 26px;
+    opacity:.55;
+    pointer-events:none;
+    animation: float 5s ease-in-out infinite;
+  }
+  @keyframes float{ 0%,100%{ transform: translateY(0) rotate(-4deg);} 50%{ transform: translateY(-10px) rotate(4deg);} }
+  .d1{ top:6%; left:6%; animation-delay:0s; }
+  .d2{ top:14%; right:8%; animation-delay:1.2s; font-size:22px; }
+  .d3{ bottom:14%; left:4%; animation-delay:.6s; font-size:24px; }
+  .d4{ bottom:8%; right:6%; animation-delay:1.8s; }
+  .d5{ top:44%; left:2%; animation-delay:2.2s; font-size:20px; }
+  .d6{ top:40%; right:2%; animation-delay:1.5s; font-size:20px; }
+
+  .title{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size: clamp(46px, 9vw, 68px);
+    color: var(--pink-deep);
+    text-shadow: 0 2px 0 rgba(255,255,255,.85), 0 3px 8px rgba(91,74,85,.16);
+    margin: 0;
+    line-height:1;
+    z-index:1;
+  }
+  .sub{
+    font-size:14px;
+    color: var(--ink-soft);
+    letter-spacing:.5px;
+    margin: 4px 0 26px;
+    z-index:1;
+    text-align:center;
+  }
+
+  .booth{
+    z-index:1;
+    background: var(--white);
+    border-radius: 28px;
+    padding: 20px;
+    width: min(520px, 92vw);
+    box-shadow: 0 18px 40px rgba(244,166,194,.35);
+    border: 3px dashed var(--pink);
+    position:relative;
+  }
+  .tape{
+    position:absolute;
+    top:-16px; left:50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width:90px; height:32px;
+    background: rgba(255,243,207,.85);
+    border: 1px solid rgba(0,0,0,.03);
+    box-shadow: 0 3px 6px rgba(0,0,0,.08);
+  }
+
+  .screen{
+    position:relative;
+    width:100%;
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg, var(--lavender), var(--pink));
+    border-radius: 20px;
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  video{
+    width:100%; height:100%; object-fit:cover;
+    transform: scaleX(-1);
+    display:none;
+  }
+  .flashcap{
+    position:absolute; inset:0;
+    background: #fff;
+    opacity:0;
+    pointer-events:none;
+  }
+  .flashcap.on{ animation: flash .35s ease-out; }
+  @keyframes flash{ 0%{opacity:.95;} 100%{opacity:0;} }
+
+  .placeholder{
+    color: var(--ink);
+    font-size:14px; text-align:center; padding:24px;
+    line-height:1.7;
+  }
+  .placeholder .emoji{ display:block; font-size:36px; margin-bottom:6px; }
+
+  .countdown{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size: 140px;
+    color: var(--white);
+    text-shadow: 0 4px 14px rgba(0,0,0,.25);
+    opacity:0; pointer-events:none;
+  }
+  .countdown.show{ opacity:1; }
+
+  .controls{
+    margin-top:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  select{
+    background: var(--cream);
+    color: var(--ink);
+    border: 2px solid var(--pink);
+    border-radius:14px;
+    padding:10px 14px;
+    font-family:'Quicksand', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    max-width: 210px;
+  }
+  button{
+    font-family:'Quicksand', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    border:none;
+    border-radius: 999px;
+    padding: 13px 22px;
+    cursor:pointer;
+    transition: transform .12s ease, filter .12s ease;
+  }
+  button:active{ transform: scale(.95); }
+  button:disabled{ opacity:.45; cursor:not-allowed; }
+
+  .btn-main{
+    background: var(--pink-deep);
+    color: var(--white);
+    box-shadow: 0 4px 0 #D97FA6;
+  }
+  .btn-main:hover:not(:disabled){ filter:brightness(1.06); }
+
+  .btn-ghost{
+    background: var(--white);
+    color: var(--pink-deep);
+    border: 2px solid var(--pink) !important;
+  }
+  .btn-ghost:hover:not(:disabled){ background: var(--pink); color:var(--white); }
+
+  .status{
+    margin-top:10px;
+    font-size:12.5px;
+    color: var(--ink-soft);
+    text-align:center;
+    min-height:16px;
+  }
+
+  .strip-wrap{
+    z-index:1;
+    margin-top:36px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .strip{
+    background: var(--white);
+    padding: 18px 18px 26px;
+    width: 220px;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(244,166,194,.4);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    position:relative;
+  }
+  .strip .frame{
+    width:100%;
+    aspect-ratio: 4/3;
+    border-radius:10px;
+    overflow:hidden;
+    background: var(--pink);
+    border: 3px solid var(--cream);
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    position:relative;
+  }
+  .strip .frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .strip .frame{ cursor: crosshair; }
+  .strip .frame .sticker{
+    position:absolute;
+    font-size:26px;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.2));
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    user-select:none;
+    animation: pop .25s ease;
+    line-height:1;
+  }
+  @keyframes pop{ 0%{ transform: translate(-50%,-50%) scale(0); } 100%{ transform: translate(-50%,-50%) scale(1); } }
+  .strip .caption{
+    text-align:center;
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    color: var(--pink-deep);
+    font-size: 24px;
+    margin-top:2px;
+  }
+
+  .strip-actions{
+    margin-top:18px;
+    display:flex; gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+  .sticker-tray{
+    z-index:1;
+    margin-top:22px;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 14px 16px;
+    width: min(320px, 92vw);
+    box-shadow: 0 12px 26px rgba(244,166,194,.3);
+    text-align:center;
+  }
+  .sticker-tray .hint{
+    font-size:12px;
+    color: var(--ink-soft);
+    margin: 0 0 10px;
+  }
+  .sticker-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+  }
+  .sticker-grid button{
+    font-size:20px;
+    padding: 8px;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--cream);
+    border: 2px solid transparent !important;
+    border-radius: 12px;
+  }
+  .sticker-grid button.picked{
+    background: var(--pink);
+    border: 2px solid var(--pink-deep) !important;
+    transform: scale(1.08);
+  }
+
+  .frame-picker{
+    display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .frame-picker button{
+    padding: 8px 14px;
+    font-size:12px;
+    background: var(--cream);
+    color: var(--ink);
+    border: 2px solid transparent !important;
+  }
+  .frame-picker button.active{
+    border: 2px solid var(--pink-deep) !important;
+    background: var(--pink);
+  }
+
+  .filter-picker{
+    display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; justify-content:center;
+  }
+  .filter-picker button{
+    display:flex; flex-direction:column; align-items:center; gap:5px;
+    background:transparent; padding:2px; border-radius:14px;
+    border: 2px solid transparent !important;
+  }
+  .filter-picker button.active{ border: 2px solid var(--pink-deep) !important; background: var(--pink); }
+  .filter-picker .swatch{
+    width:46px; height:46px; border-radius:12px;
+    background-image: linear-gradient(135deg, #FBD5E0, #E3D9F5, #FFF3CF);
+    background-size: cover;
+    border: 1px solid rgba(0,0,0,.06);
+  }
+  .filter-picker .flabel{ font-size:10.5px; color: var(--ink-soft); font-weight:600; }
+
+  .strap-picker{
+    display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .strap-picker button{
+    width:34px; height:34px; padding:0; border-radius:50%;
+    border: 2px solid rgba(0,0,0,.08) !important;
+  }
+  .strap-picker button.active{
+    border: 3px solid var(--pink-deep) !important;
+    transform: scale(1.12);
+  }
+  .picker-label{
+    font-size:11.5px; color: var(--ink-soft); font-weight:600;
+    text-align:center; margin: 16px 0 -6px;
+    letter-spacing:.3px;
+  }
+
+  .shape-picker{
+    display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center;
+  }
+  .shape-picker button{
+    display:flex; align-items:center; gap:6px;
+    padding: 8px 14px;
+    font-size:12px;
+    background: var(--cream);
+    color: var(--ink);
+    border: 2px solid transparent !important;
+  }
+  .shape-picker button.active{
+    border: 2px solid var(--pink-deep) !important;
+    background: var(--pink);
+  }
+  .shape-icon{
+    display:inline-block;
+    background: var(--ink-soft);
+    border-radius: 2px;
+  }
+  .shape-icon.potrait{ width:11px; height:15px; }
+  .shape-icon.landscape{ width:15px; height:11px; }
+  .shape-icon.love{ width:0; }
+
+  .heart-mask{
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 88 C10 60 -6 24 20 12 C38 4 50 16 50 24 C50 16 62 4 80 12 C106 24 90 60 50 88 Z'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 88 C10 60 -6 24 20 12 C38 4 50 16 50 24 C50 16 62 4 80 12 C106 24 90 60 50 88 Z'/></svg>");
+    -webkit-mask-size:100% 100%;
+    mask-size:100% 100%;
+    -webkit-mask-repeat:no-repeat;
+    mask-repeat:no-repeat;
+    -webkit-mask-position:center;
+    mask-position:center;
+    border-radius:0 !important;
+    border:none !important;
+  }
+
+  canvas{ display:none; }
+
+  @media (max-width:480px){
+    .countdown{ font-size:100px; }
+    .doodle{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+  <span class="doodle d1">✿</span>
+  <span class="doodle d2">☁︎</span>
+  <span class="doodle d3">✧</span>
+  <span class="doodle d4">🎀</span>
+  <span class="doodle d5">˚</span>
+  <span class="doodle d6">❀</span>
+
+  <h1 class="title">Skyflowesn booth</h1>
+  <p class="sub">⋆｡ﾟ☁︎ jepret momen manis ☁︎ﾟ｡⋆</p>
+
+  <div class="booth">
+    <div class="tape"></div>
+    <div class="screen" id="screen">
+      <div class="placeholder" id="placeholder">
+        <span class="emoji">📸</span>
+        kamera belum nyala nih~<br>pilih kamera lalu tekan "nyalain kamera" ya!
+      </div>
+      <video id="video" autoplay playsinline></video>
+      <div class="flashcap" id="flash"></div>
+      <div class="countdown" id="countdown">3</div>
+    </div>
+
+    <div class="controls">
+      <select id="deviceSelect" title="Pilih kamera"></select>
+      <button class="btn-ghost" id="startBtn">nyalain kamera</button>
+      <button class="btn-main" id="captureBtn" disabled>jepret 4x ✨</button>
+    </div>
+    <p class="picker-label">filter foto</p>
+    <div class="filter-picker" id="filterPicker"></div>
+
+    <p class="picker-label">caption</p>
+    <div class="frame-picker" id="framePicker">
+      <button data-caption="✿ cutie ✿" class="active">✿ cutie</button>
+      <button data-caption="best friends">bff</button>
+      <button data-caption="☁︎ soft day ☁︎">soft day</button>
+      <button data-caption="memories 💌">memories</button>
+    </div>
+
+    <p class="picker-label">bentuk frame</p>
+    <div class="shape-picker" id="shapePicker">
+      <button data-shape="potrait" class="active"><span class="shape-icon potrait"></span>potrait</button>
+      <button data-shape="landscape"><span class="shape-icon landscape"></span>landscape</button>
+      <button data-shape="love">💗 love</button>
+    </div>
+
+    <p class="picker-label">warna strip</p>
+    <div class="strap-picker" id="strapPicker"></div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="strip-wrap" id="stripWrap" style="display:none;">
+    <div class="strip" id="strip"></div>
+
+    <div class="sticker-tray">
+      <p class="hint">pilih stiker, lalu tap di foto buat nempel ✿</p>
+      <div class="sticker-grid" id="stickerGrid"></div>
+    </div>
+
+    <div class="strip-actions">
+      <button class="btn-main" id="downloadBtn">simpan foto 💾</button>
+      <button class="btn-ghost" id="resetBtn">ulangi lagi</button>
+    </div>
+  </div>
+
+  <canvas id="canvas"></canvas>
+  <script src="photo-booth-canvas.js" defer></script>
+
+</body>
+</html>
