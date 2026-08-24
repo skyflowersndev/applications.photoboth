@@ -216,7 +216,7 @@
     .page-layout{
       width:min(1420px, calc(100vw - 48px));
       display:grid;
-      grid-template-columns:minmax(0, 1fr) minmax(210px, 240px);
+      grid-template-columns:minmax(0, 1fr) minmax(430px, 480px);
       gap:24px;
       align-items:start;
       justify-content:center;
@@ -224,11 +224,32 @@
     .page-layout > .booth{ width:100%; }
     .page-layout > .strip-wrap{
       margin-top:0;
-      width:240px;
+      width:480px;
       min-width:0;
     }
-    .page-layout > .strip-wrap .strip{ width:220px; }
-    .page-layout > .strip-wrap .sticker-tray{ width:100%; }
+    .page-layout > .strip-wrap.results-visible{
+      display:grid !important;
+      grid-template-columns:220px 240px;
+      gap:20px;
+      align-items:start;
+      justify-content:start;
+    }
+    .page-layout > .strip-wrap .strip{
+      width:220px;
+      grid-column:1;
+      grid-row:1 / span 2;
+    }
+    .page-layout > .strip-wrap .sticker-tray{
+      width:240px;
+      grid-column:2;
+      grid-row:1;
+      margin-top:0;
+    }
+    .page-layout > .strip-wrap .strip-actions{
+      grid-column:2;
+      grid-row:2;
+      margin-top:0;
+    }
   }
   .strip{
     background: var(--white);
@@ -457,7 +478,6 @@
   <span class="doodle d6">❀</span>
 
   <h1 class="title">Skyflowesn booth</h1>
-  <p class="sub">⋆｡ﾟ☁︎ ☁︎ﾟ｡⋆</p>
   <p class="browser-note"><strong>Perhatian:</strong> dapat diakses melalui Google Chrome dan Safari.</p>
 
   <div class="page-layout">

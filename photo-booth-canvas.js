@@ -414,6 +414,7 @@
       const shotCount = Number(shotCountSelect.value);
       captureBtn.disabled = true;
       strip.innerHTML = '';
+      stripWrap.classList.remove('results-visible');
       stripWrap.style.display = 'none';
       const shots = [];
 
@@ -467,6 +468,7 @@
       caption.textContent = currentCaption;
       strip.appendChild(caption);
       applyStrapStyle();
+      stripWrap.classList.add('results-visible');
       stripWrap.style.display = 'flex';
       status.textContent = 'strip foto kamu siap, yuk tempel stiker! 🤍';
       stripWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -596,6 +598,7 @@
 
     resetBtn.addEventListener('click', () => {
       strip.innerHTML = '';
+      stripWrap.classList.remove('results-visible');
       stripWrap.style.display = 'none';
       placedStickers = [];
       selectedSticker = null;
