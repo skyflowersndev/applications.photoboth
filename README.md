@@ -12,7 +12,7 @@ Semua proses — mulai dari kamera, pengambilan foto, filter, dekorasi, sampai p
 - **Sesi jepret otomatis 4x** — dengan hitung mundur 3-2-1 di tiap sesi, lengkap efek flash.
 - **Filter foto ala Y2K/Pinterest aesthetic** — 8 pilihan gaya: polos, y2k flash, film vintage, soft dreamy, vhs retro, pink wash, b&w film, chrome cool. Filter langsung terbakar ke hasil foto, bukan cuma efek sementara.
 - **Bentuk frame bisa dipilih** — potrait, landscape, atau bentuk hati (love) — berlaku untuk preview kamera maupun hasil strip.
-- **Motif/warna strip (strap) bergaya Pinterest** — 17 pilihan seperti chrome holo, gingham pastel, cherry picnic, lilac bloom, strawberry milk, butter daisy, denim blue, newspaper, sunset retro, hingga hitam solid.
+- **Motif/warna strip (strap) bertema Y2K** — chrome holo, cyber stripes, polka cream, gingham plaid, star sparkle, flame y2k, y2k chrome, hingga hitam solid.
 - **Stiker interaktif** — 16 pilihan stiker lucu (🎀 ✿ ⭐️ 💗 ☁︎ ✨ 🍓 🧸 🦋 🌷 💌 🍒 🐰 🌈 😽 🍥) yang bisa ditempel bebas di posisi manapun pada tiap foto, dan dihapus dengan sekali tap.
 - **Pilihan caption** — beberapa caption siap pakai untuk strip foto.
 - **Simpan strip foto** — hasil akhir (4 foto + stiker + caption + motif strip + bentuk frame) diunduh otomatis sebagai satu file `.jpg`, persis seperti yang terlihat di preview.
