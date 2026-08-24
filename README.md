@@ -1,5 +1,7 @@
 # 🌸 SkyFlowers Booth
 
+https://skyflowersndev.github.io/applications.photoboth/
+
 **SkyFlowers Booth** adalah aplikasi photo booth berbasis web dengan tampilan *cute*, bernuansa **pastel Y2K ala Pinterest**. Aplikasi ini berjalan langsung di browser, mengakses kamera device (webcam laptop, kamera eksternal, atau kamera HP yang dijadikan webcam), lalu menghasilkan strip foto ala photo booth klasik yang bisa dihias dan diunduh.
 
 Semua proses — mulai dari kamera, pengambilan foto, filter, dekorasi, sampai penyimpanan — berjalan sepenuhnya di sisi browser (client-side). Tidak ada foto yang diunggah ke server manapun.
