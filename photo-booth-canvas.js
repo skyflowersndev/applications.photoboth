@@ -23,7 +23,7 @@
       landscape: { ratio: 4/3, heart:false },
       love:      { ratio: 1,   heart:true  }
     };
-    let currentShape = 'potrait';
+    let currentShape = 'landscape';
 
     function applyScreenShape(){
       const s = SHAPES[currentShape];

@@ -66,6 +66,17 @@
     z-index:1;
     text-align:center;
   }
+  .browser-note{
+    font-size:12px;
+    color:var(--pink-deep);
+    background:rgba(255,255,255,.82);
+    border:1px solid var(--pink);
+    border-radius:12px;
+    padding:7px 12px;
+    margin:-12px 0 22px;
+    text-align:center;
+    z-index:1;
+  }
 
   .booth{
     z-index:1;
@@ -77,6 +88,7 @@
     border: 3px dashed var(--pink);
     position:relative;
   }
+  .booth-settings{ display:contents; }
   .tape{
     position:absolute;
     top:-16px; left:50%;
@@ -368,6 +380,42 @@
     .countdown{ font-size:100px; }
     .doodle{ display:none; }
   }
+
+  @media (min-width:768px) and (orientation:landscape){
+    body{ padding:22px 24px 34px; }
+    .title{ font-size:clamp(52px, 6vw, 68px); }
+    .sub{ margin-bottom:18px; }
+    .booth{
+      width:min(1120px, calc(100vw - 48px));
+      max-width:100%;
+      padding:18px;
+      display:grid;
+      grid-template-columns:minmax(260px, .82fr) minmax(0, 1.35fr);
+      gap:0 20px;
+      align-items:start;
+    }
+    .screen{
+      grid-column:2;
+      grid-row:1;
+      min-width:0;
+      aspect-ratio:4/3;
+    }
+    .booth-settings{
+      grid-column:1;
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+    .controls{ margin-top:0; }
+    select{ max-width:100%; width:100%; }
+    .picker-label{ margin-top:13px; }
+    .filter-picker{ gap:7px; margin-top:10px; }
+    .filter-picker .swatch{ width:clamp(40px, 4vw, 46px); height:clamp(40px, 4vw, 46px); }
+    .filter-picker .flabel{ font-size:10px; }
+    .frame-picker, .shape-picker{ margin-top:10px; }
+    .strap-picker{ margin-top:10px; }
+    .status{ margin-top:8px; }
+  }
 </style>
 </head>
 <body>
@@ -380,7 +428,8 @@
   <span class="doodle d6">❀</span>
 
   <h1 class="title">Skyflowesn booth</h1>
-  <p class="sub">⋆｡ﾟ☁︎ jepret momen manis ☁︎ﾟ｡⋆</p>
+  <p class="sub">⋆｡ﾟ☁︎ ☁︎ﾟ｡⋆</p>
+  <p class="browser-note"><strong>Perhatian:</strong> dapat diakses melalui Google Chrome dan Safari.</p>
 
   <div class="booth">
     <div class="tape"></div>
@@ -394,32 +443,34 @@
       <div class="countdown" id="countdown">3</div>
     </div>
 
-    <div class="controls">
-      <select id="deviceSelect" title="Pilih kamera"></select>
-      <button class="btn-ghost" id="startBtn">nyalain kamera</button>
-      <button class="btn-main" id="captureBtn" disabled>jepret 4x ✨</button>
-    </div>
-    <p class="picker-label">filter foto</p>
-    <div class="filter-picker" id="filterPicker"></div>
+    <div class="booth-settings">
+      <div class="controls">
+        <select id="deviceSelect" title="Pilih kamera"></select>
+        <button class="btn-ghost" id="startBtn">nyalain kamera</button>
+        <button class="btn-main" id="captureBtn" disabled>jepret 4x ✨</button>
+      </div>
+      <p class="picker-label">filter foto</p>
+      <div class="filter-picker" id="filterPicker"></div>
 
-    <p class="picker-label">caption</p>
-    <div class="frame-picker" id="framePicker">
-      <button data-caption="✿ cutie ✿" class="active">✿ cutie</button>
-      <button data-caption="best friends">bff</button>
-      <button data-caption="☁︎ soft day ☁︎">soft day</button>
-      <button data-caption="memories 💌">memories</button>
-    </div>
+      <p class="picker-label">caption</p>
+      <div class="frame-picker" id="framePicker">
+        <button data-caption="✿ cutie ✿" class="active">✿ cutie</button>
+        <button data-caption="best friends">bff</button>
+        <button data-caption="☁︎ soft day ☁︎">soft day</button>
+        <button data-caption="memories 💌">memories</button>
+      </div>
 
-    <p class="picker-label">bentuk frame</p>
-    <div class="shape-picker" id="shapePicker">
-      <button data-shape="potrait" class="active"><span class="shape-icon potrait"></span>potrait</button>
-      <button data-shape="landscape"><span class="shape-icon landscape"></span>landscape</button>
-      <button data-shape="love">💗 love</button>
-    </div>
+      <p class="picker-label">bentuk frame</p>
+      <div class="shape-picker" id="shapePicker">
+        <button data-shape="potrait"><span class="shape-icon potrait"></span>potrait</button>
+        <button data-shape="landscape" class="active"><span class="shape-icon landscape"></span>landscape</button>
+        <button data-shape="love">💗 love</button>
+      </div>
 
-    <p class="picker-label">warna strip</p>
-    <div class="strap-picker" id="strapPicker"></div>
-    <div class="status" id="status"></div>
+      <p class="picker-label">warna strip</p>
+      <div class="strap-picker" id="strapPicker"></div>
+      <div class="status" id="status"></div>
+    </div>
   </div>
 
   <div class="strip-wrap" id="stripWrap" style="display:none;">
