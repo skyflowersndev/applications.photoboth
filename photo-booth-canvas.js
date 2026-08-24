@@ -2,6 +2,8 @@
     const placeholder = document.getElementById('placeholder');
     const deviceSelect = document.getElementById('deviceSelect');
     const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const shotCountSelect = document.getElementById('shotCountSelect');
     const captureBtn = document.getElementById('captureBtn');
     const status = document.getElementById('status');
     const flash = document.getElementById('flash');
@@ -29,6 +31,7 @@
       const s = SHAPES[currentShape];
       screen.style.aspectRatio = String(s.ratio);
       screen.classList.toggle('heart-mask', s.heart);
+      screen.classList.toggle('portrait-screen', currentShape === 'potrait');
     }
     applyScreenShape();
 
@@ -43,7 +46,6 @@
 
     let currentStream = null;
     let currentCaption = '✿ cutie ✿';
-    const SHOT_COUNT = 4;
     const STICKERS = ['🎀','✿','⭐️','💗','☁︎','✨','🍓','🧸','🦋','🌷','💌','🍒','🐰','🌈','😽','🍥'];
     let selectedSticker = null;
     let placedStickers = [];
@@ -174,6 +176,91 @@
         css:'#2B2230',
         text:'#FBD5E0', caption:'#FF9AD5',
         draw(ctx,x,y,w,h){ ctx.fillStyle = '#2B2230'; ctx.fillRect(x,y,w,h); }
+      },
+      {
+        name:'matcha cream',
+        css:'linear-gradient(135deg,#DDECCB,#FFF9E9)',
+        text:'#40543A', caption:'#668B55',
+        draw(ctx,x,y,w,h){
+          const g = ctx.createLinearGradient(x,y,x+w,y+h);
+          g.addColorStop(0,'#DDECCB'); g.addColorStop(1,'#FFF9E9');
+          ctx.fillStyle = g; ctx.fillRect(x,y,w,h);
+        }
+      },
+      {
+        name:'blue gingham',
+        css:'repeating-linear-gradient(0deg,rgba(126,181,218,.45) 0 10px,transparent 10px 20px),repeating-linear-gradient(90deg,rgba(126,181,218,.45) 0 10px,transparent 10px 20px),#F5FBFF',
+        text:'#315A78', caption:'#4B8AB5',
+        draw(ctx,x,y,w,h){
+          ctx.fillStyle='#F5FBFF'; ctx.fillRect(x,y,w,h);
+          ctx.fillStyle='rgba(126,181,218,.45)';
+          for(let py=y;py<y+h;py+=40) ctx.fillRect(x,py,w,20);
+          for(let px=x;px<x+w;px+=40) ctx.fillRect(px,y,20,h);
+        }
+      },
+      {
+        name:'cherry picnic',
+        css:'radial-gradient(circle,#D9475D 3px,transparent 4px) 0 0/24px 24px,#FFF5E8',
+        text:'#7A2734', caption:'#D9475D',
+        draw(ctx,x,y,w,h){
+          ctx.fillStyle='#FFF5E8'; ctx.fillRect(x,y,w,h); ctx.fillStyle='#D9475D';
+          for(let py=y+12;py<y+h;py+=24) for(let px=x+12;px<x+w;px+=24){ ctx.beginPath(); ctx.arc(px,py,4,0,Math.PI*2); ctx.fill(); }
+        }
+      },
+      {
+        name:'lilac bloom',
+        css:'radial-gradient(circle at 20% 30%,#fff 0 3px,transparent 4px),radial-gradient(circle at 70% 70%,#fff 0 3px,transparent 4px),#CDBBEA',
+        text:'#513C75', caption:'#8064B4',
+        draw(ctx,x,y,w,h){
+          ctx.fillStyle='#CDBBEA'; ctx.fillRect(x,y,w,h); ctx.fillStyle='#fff';
+          [[.2,.3],[.7,.7],[.5,.15],[.85,.35],[.3,.85]].forEach(([fx,fy])=>{ctx.beginPath();ctx.arc(x+fx*w,y+fy*h,4,0,Math.PI*2);ctx.fill();});
+        }
+      },
+      {
+        name:'strawberry milk',
+        css:'linear-gradient(135deg,#FFF0F4 0%,#FFB5C7 48%,#FFF0F4 100%)',
+        text:'#873C56', caption:'#D45D82',
+        draw(ctx,x,y,w,h){
+          const g=ctx.createLinearGradient(x,y,x+w,y+h); g.addColorStop(0,'#FFF0F4'); g.addColorStop(.48,'#FFB5C7'); g.addColorStop(1,'#FFF0F4');
+          ctx.fillStyle=g; ctx.fillRect(x,y,w,h);
+        }
+      },
+      {
+        name:'butter daisy',
+        css:'radial-gradient(circle,#F7C94B 0 3px,transparent 4px) 0 0/30px 30px,#FFF5B8',
+        text:'#80651C', caption:'#B98916',
+        draw(ctx,x,y,w,h){
+          ctx.fillStyle='#FFF5B8'; ctx.fillRect(x,y,w,h); ctx.fillStyle='#F7C94B';
+          for(let py=y+15;py<y+h;py+=30) for(let px=x+15;px<x+w;px+=30){ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);ctx.fill();}
+        }
+      },
+      {
+        name:'denim blue',
+        css:'repeating-linear-gradient(0deg,rgba(255,255,255,.12) 0 1px,transparent 1px 5px),#6B9BC2',
+        text:'#23445E', caption:'#356D99',
+        draw(ctx,x,y,w,h){
+          ctx.fillStyle='#6B9BC2'; ctx.fillRect(x,y,w,h); ctx.strokeStyle='rgba(255,255,255,.18)'; ctx.lineWidth=1;
+          for(let py=y;py<y+h;py+=5){ctx.beginPath();ctx.moveTo(x,py);ctx.lineTo(x+w,py);ctx.stroke();}
+        }
+      },
+      {
+        name:'newspaper',
+        css:'repeating-linear-gradient(0deg,#F5F0E8 0 8px,#DED7C9 8px 9px)',
+        text:'#38342F', caption:'#4E4941',
+        draw(ctx,x,y,w,h){
+          ctx.fillStyle='#F5F0E8'; ctx.fillRect(x,y,w,h); ctx.fillStyle='#B7AEA0';
+          for(let py=y+8;py<y+h;py+=18) ctx.fillRect(x+10,py,w-20,2);
+          ctx.fillStyle='#6B6258'; ctx.font='bold 18px serif'; ctx.fillText('daily',x+12,y+28);
+        }
+      },
+      {
+        name:'sunset retro',
+        css:'linear-gradient(180deg,#F5A6B8,#F8C66C 55%,#7697C8)',
+        text:'#5A3757', caption:'#A44D68',
+        draw(ctx,x,y,w,h){
+          const g=ctx.createLinearGradient(x,y,x,y+h); g.addColorStop(0,'#F5A6B8'); g.addColorStop(.55,'#F8C66C'); g.addColorStop(1,'#7697C8'); ctx.fillStyle=g; ctx.fillRect(x,y,w,h);
+          ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=3; for(let py=y+h*.6;py<y+h;py+=12){ctx.beginPath();ctx.moveTo(x,py);ctx.lineTo(x+w,py);ctx.stroke();}
+        }
       }
     ];
     let currentStrapIndex = 0;
@@ -260,6 +347,7 @@
         video.style.display = 'block';
         placeholder.style.display = 'none';
         captureBtn.disabled = false;
+        stopBtn.disabled = false;
         status.textContent = 'kamera nyala, siap jepret! ✨';
         await listCameras();
       }catch(err){
@@ -270,6 +358,21 @@
     startBtn.addEventListener('click', async () => {
       await startCamera(deviceSelect.value || undefined);
     });
+
+    function stopCamera(){
+      if(currentStream){
+        currentStream.getTracks().forEach(track => track.stop());
+        currentStream = null;
+      }
+      video.srcObject = null;
+      video.style.display = 'none';
+      placeholder.style.display = 'block';
+      captureBtn.disabled = true;
+      stopBtn.disabled = true;
+      status.textContent = 'kamera sudah dimatikan.';
+    }
+
+    stopBtn.addEventListener('click', stopCamera);
 
     deviceSelect.addEventListener('change', () => {
       if(currentStream) startCamera(deviceSelect.value);
@@ -308,18 +411,19 @@
     }
 
     captureBtn.addEventListener('click', () => {
+      const shotCount = Number(shotCountSelect.value);
       captureBtn.disabled = true;
       strip.innerHTML = '';
       stripWrap.style.display = 'none';
       const shots = [];
 
       function nextShot(i){
-        if(i >= SHOT_COUNT){
+        if(i >= shotCount){
           buildStrip(shots);
           captureBtn.disabled = false;
           return;
         }
-        status.textContent = `jepretan ${i + 1} dari ${SHOT_COUNT}...`;
+        status.textContent = `jepretan ${i + 1} dari ${shotCount}...`;
         countdownThen(3, () => {
           shots.push(takeSnapshot());
           setTimeout(() => nextShot(i + 1), 500);

@@ -89,6 +89,12 @@
     position:relative;
   }
   .booth-settings{ display:contents; }
+  .page-layout{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
   .tape{
     position:absolute;
     top:-16px; left:50%;
@@ -107,6 +113,10 @@
     border-radius: 20px;
     overflow:hidden;
     display:flex; align-items:center; justify-content:center;
+  }
+  .screen.portrait-screen{
+    width:min(100%, 380px);
+    justify-self:center;
   }
   video{
     width:100%; height:100%; object-fit:cover;
@@ -201,6 +211,24 @@
     display:flex;
     flex-direction:column;
     align-items:center;
+  }
+  @media (min-width:1200px) and (orientation:landscape){
+    .page-layout{
+      width:min(1420px, calc(100vw - 48px));
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) minmax(210px, 240px);
+      gap:24px;
+      align-items:start;
+      justify-content:center;
+    }
+    .page-layout > .booth{ width:100%; }
+    .page-layout > .strip-wrap{
+      margin-top:0;
+      width:240px;
+      min-width:0;
+    }
+    .page-layout > .strip-wrap .strip{ width:220px; }
+    .page-layout > .strip-wrap .sticker-tray{ width:100%; }
   }
   .strip{
     background: var(--white);
@@ -386,7 +414,7 @@
     .title{ font-size:clamp(52px, 6vw, 68px); }
     .sub{ margin-bottom:18px; }
     .booth{
-      width:min(1120px, calc(100vw - 48px));
+      width:min(1120px, 100%);
       max-width:100%;
       padding:18px;
       display:grid;
@@ -400,6 +428,7 @@
       min-width:0;
       aspect-ratio:4/3;
     }
+    .screen.portrait-screen{ width:min(100%, 380px); }
     .booth-settings{
       grid-column:1;
       display:flex;
@@ -431,6 +460,7 @@
   <p class="sub">⋆｡ﾟ☁︎ ☁︎ﾟ｡⋆</p>
   <p class="browser-note"><strong>Perhatian:</strong> dapat diakses melalui Google Chrome dan Safari.</p>
 
+  <div class="page-layout">
   <div class="booth">
     <div class="tape"></div>
     <div class="screen" id="screen">
@@ -447,7 +477,14 @@
       <div class="controls">
         <select id="deviceSelect" title="Pilih kamera"></select>
         <button class="btn-ghost" id="startBtn">nyalain kamera</button>
-        <button class="btn-main" id="captureBtn" disabled>jepret 4x ✨</button>
+        <button class="btn-ghost" id="stopBtn" disabled>matikan kamera</button>
+        <select id="shotCountSelect" title="Jumlah foto">
+          <option value="1">1 foto</option>
+          <option value="2">2 foto</option>
+          <option value="3">3 foto</option>
+          <option value="4" selected>4 foto</option>
+        </select>
+        <button class="btn-main" id="captureBtn" disabled>jepret ✨</button>
       </div>
       <p class="picker-label">filter foto</p>
       <div class="filter-picker" id="filterPicker"></div>
@@ -485,6 +522,7 @@
       <button class="btn-main" id="downloadBtn">simpan foto 💾</button>
       <button class="btn-ghost" id="resetBtn">ulangi lagi</button>
     </div>
+  </div>
   </div>
 
   <canvas id="canvas"></canvas>
