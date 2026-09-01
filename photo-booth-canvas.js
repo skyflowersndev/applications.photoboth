@@ -46,6 +46,7 @@
 
     let currentStream = null;
     let currentCaption = '✿ cutie ✿';
+    let isPhotoProcessRunning = false;
     const STICKERS = ['🎀','✿','⭐️','💗','☁︎','✨','🍓','🧸','🦋','🌷','💌','🍒','🐰','🌈','😽','🍥'];
     let selectedSticker = null;
     let placedStickers = [];
@@ -335,54 +336,101 @@
       }
     }
 
+    function buildVideoConstraints(deviceId){
+      if(deviceId) {
+        return {
+          deviceId: { exact: deviceId }
+        };
+      }
+
+      if(navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints && navigator.mediaDevices.getSupportedConstraints().facingMode) {
+        return { facingMode: 'user' };
+      }
+
+      return true;
+    }
+
+    function setCameraBusyState(busy){
+      isPhotoProcessRunning = busy;
+      startBtn.disabled = busy;
+      stopBtn.disabled = busy;
+      if(!busy && !currentStream){
+        captureBtn.disabled = true;
+      }
+    }
+
     async function startCamera(deviceId){
+      if(isPhotoProcessRunning) return;
       if(currentStream){
         currentStream.getTracks().forEach(t => t.stop());
       }
       status.textContent = 'lagi minta izin kamera...';
       try{
         const constraints = {
-          video: deviceId ? { deviceId: { exact: deviceId } } : true,
+          video: buildVideoConstraints(deviceId),
           audio: false
         };
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         currentStream = stream;
-        video.srcObject = stream;
+        if ('srcObject' in video) {
+          video.srcObject = stream;
+        } else if (typeof URL !== 'undefined' && URL.createObjectURL) {
+          video.src = URL.createObjectURL(stream);
+        }
         video.style.display = 'block';
         placeholder.style.display = 'none';
         captureBtn.disabled = false;
         stopBtn.disabled = false;
+        startBtn.disabled = false;
         status.textContent = 'kamera nyala, siap jepret! ✨';
         await listCameras();
       }catch(err){
         status.textContent = 'gagal akses kamera: ' + err.message;
+        if(currentStream){
+          currentStream.getTracks().forEach(track => track.stop());
+          currentStream = null;
+        }
+        captureBtn.disabled = true;
+        stopBtn.disabled = true;
+        startBtn.disabled = false;
       }
     }
 
     startBtn.addEventListener('click', async () => {
+      if(isPhotoProcessRunning) return;
       await startCamera(deviceSelect.value || undefined);
     });
 
     function stopCamera(){
+      if(isPhotoProcessRunning) return;
       if(currentStream){
         currentStream.getTracks().forEach(track => track.stop());
         currentStream = null;
       }
-      video.srcObject = null;
+      if ('srcObject' in video) {
+        video.srcObject = null;
+      } else {
+        video.removeAttribute('src');
+        video.load();
+      }
       video.style.display = 'none';
       placeholder.style.display = 'block';
       captureBtn.disabled = true;
       stopBtn.disabled = true;
+      startBtn.disabled = false;
       status.textContent = 'kamera sudah dimatikan.';
     }
 
     stopBtn.addEventListener('click', stopCamera);
 
     deviceSelect.addEventListener('change', () => {
+      if(isPhotoProcessRunning) return;
       if(currentStream) startCamera(deviceSelect.value);
     });
 
-    navigator.mediaDevices?.addEventListener?.('devicechange', listCameras);
+    if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+      navigator.mediaDevices.addEventListener('devicechange', listCameras);
+    }
     listCameras();
 
     function countdownThen(n, cb){
@@ -420,7 +468,11 @@
     }
 
     captureBtn.addEventListener('click', () => {
+      if(isPhotoProcessRunning) return;
       const shotCount = Number(shotCountSelect.value);
+      isPhotoProcessRunning = true;
+      startBtn.disabled = true;
+      stopBtn.disabled = true;
       captureBtn.disabled = true;
       strip.innerHTML = '';
       stripWrap.classList.remove('results-visible');
@@ -430,7 +482,10 @@
       function nextShot(i){
         if(i >= shotCount){
           buildStrip(shots);
+          isPhotoProcessRunning = false;
           captureBtn.disabled = false;
+          stopBtn.disabled = false;
+          startBtn.disabled = false;
           return;
         }
         status.textContent = `jepretan ${i + 1} dari ${shotCount}...`;
