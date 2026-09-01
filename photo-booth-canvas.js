@@ -354,6 +354,8 @@
       isPhotoProcessRunning = busy;
       startBtn.disabled = busy;
       stopBtn.disabled = busy;
+      deviceSelect.disabled = busy;
+      shotCountSelect.disabled = busy;
       if(!busy && !currentStream){
         captureBtn.disabled = true;
       }
@@ -473,6 +475,8 @@
       isPhotoProcessRunning = true;
       startBtn.disabled = true;
       stopBtn.disabled = true;
+      deviceSelect.disabled = true;
+      shotCountSelect.disabled = true;
       captureBtn.disabled = true;
       strip.innerHTML = '';
       stripWrap.classList.remove('results-visible');
@@ -483,6 +487,8 @@
         if(i >= shotCount){
           buildStrip(shots);
           isPhotoProcessRunning = false;
+          deviceSelect.disabled = false;
+          shotCountSelect.disabled = false;
           captureBtn.disabled = false;
           stopBtn.disabled = false;
           startBtn.disabled = false;
