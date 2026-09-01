@@ -62,6 +62,10 @@
     ];
     let currentFilterIndex = 0;
 
+    function getCurrentFilterCss(){
+      return FILTERS[currentFilterIndex]?.css || 'none';
+    }
+
     filterPicker.innerHTML = FILTERS.map((f, i) => `
       <button type="button" data-index="${i}" class="${i===0 ? 'active':''}">
         <span class="swatch" style="background-image:${f.grad}; filter:${f.css};"></span>
@@ -75,7 +79,7 @@
       currentFilterIndex = parseInt(btn.dataset.index, 10);
       filterPicker.querySelectorAll('button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      video.style.filter = FILTERS[currentFilterIndex].css;
+      video.style.filter = getCurrentFilterCss();
     });
 
     const STRAPS = [
@@ -395,19 +399,24 @@
     }
 
     function takeSnapshot(){
-      const w = video.videoWidth, h = video.videoHeight;
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext('2d');
+      const w = video.videoWidth || 1280;
+      const h = video.videoHeight || 960;
+      const shotCanvas = document.createElement('canvas');
+      shotCanvas.width = w;
+      shotCanvas.height = h;
+      const ctx = shotCanvas.getContext('2d');
+      ctx.clearRect(0, 0, w, h);
+      ctx.save();
       ctx.translate(w, 0);
       ctx.scale(-1, 1);
-      ctx.filter = FILTERS[currentFilterIndex].css;
+      ctx.filter = getCurrentFilterCss();
       ctx.drawImage(video, 0, 0, w, h);
+      ctx.restore();
       ctx.filter = 'none';
       flash.classList.remove('on');
       void flash.offsetWidth;
       flash.classList.add('on');
-      return canvas.toDataURL('image/jpeg', 0.92);
+      return shotCanvas.toDataURL('image/jpeg', 0.92);
     }
 
     captureBtn.addEventListener('click', () => {
